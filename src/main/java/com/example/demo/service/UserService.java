@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,21 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Hash password sebelum disimpan
         return userRepository.save(user);
     }
+
+    public Optional<User> loginUser(String username, String password) {
+    Optional<User> userOptional = userRepository.findByUsername(username);
+
+    if (userOptional.isPresent()) {
+        User user = userOptional.get();
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return Optional.of(user); // ✅ Login sukses
+        } else {
+            throw new RuntimeException("Password salah!"); // ❌ Password tidak cocok
+        }
+    } else {
+        throw new RuntimeException("User tidak ditemukan!"); // ❌ User tidak ada
+    }
+}
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

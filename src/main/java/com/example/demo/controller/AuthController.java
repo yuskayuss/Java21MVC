@@ -5,6 +5,10 @@ import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional; // 🔹 Tambahkan import ini!
+
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -23,4 +27,29 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    //   @PostMapping("/login")
+    // public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+    //     try {
+    //         Optional<User> user = userService.loginUser(username, password);
+    //         return ResponseEntity.ok(user.get()); // ✅ Berhasil login
+    //     } catch (RuntimeException e) {
+    //         return ResponseEntity.badRequest().body(e.getMessage()); // ❌ Gagal login
+    //     }
+    // }
+
+    @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+    String username = request.get("username");
+    String password = request.get("password");
+
+    System.out.println("Login attempt: " + username + " - " + password);
+
+    try {
+        Optional<User> user = userService.loginUser(username, password);
+        return ResponseEntity.ok(user.get()); // ✅ Berhasil login
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage()); // ❌ Gagal login
+    }
+}
 }
