@@ -4,10 +4,10 @@ import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+
 
 import java.util.Optional; // 🔹 Tambahkan import ini!
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
